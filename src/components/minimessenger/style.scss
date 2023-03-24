@@ -1,0 +1,234 @@
+.mini_messenger {
+    position: fixed;
+    bottom: 0;
+    right: 60px;
+    width: 330px;
+    height: 450px;
+    z-index: 99;
+    background-color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: -1px -1px 6px rgb(0, 0, 0, 0.075);
+    // overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .date_time_stamp-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 16px;
+        .date_time_stamp{
+            padding: 7px 10px;
+            background-color: rgb(87, 87, 87);
+            font-size: 12px;
+        }
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 0 1px 2px rgb(0, 0, 0, 0.20);
+        height: 50px;
+        align-items: center;
+        padding: 0px 10px;
+
+        .header_left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            .avatar_container{
+                position: relative;
+                .active_dot{
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    position: absolute;
+                    border: 3px solid white;
+                    top: -5px;
+                    left: -5px;
+                    background-color: #05c52f;
+                }
+            }
+            .header_info {
+                display: flex;
+                flex-direction: column;
+
+                .username {
+                    font-size: .9375rem;
+                    font-weight: 600;
+                    letter-spacing: 0.03rem;
+                }
+
+                .active_status {
+                    font-size: .8125rem;
+                    font-weight: normal;
+                    line-height: 1.2308;
+                    margin-top: 3px;
+                    color: gray;
+                    .active_status_active{
+                        color: #05c52f;
+                        font-weight: 600;
+                        letter-spacing: 0.04rem;
+                    }
+                }
+            }
+        }
+
+        .header_right {
+            svg {
+                width: 25px;
+                height: 25px;
+                padding: 3px;
+                cursor: pointer;
+                color: rgb(151, 151, 151);
+                border-radius: 50%;
+
+                &:hover {
+                    background-color: rgba(151, 151, 151, 0.120)
+                }
+            }
+        }
+    }
+
+    .main_screen {
+        flex: 1;
+        // background-color: brown;
+        padding: 10px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar-track {
+            margin: 2px 0px;
+            opacity: 0 !important;
+
+        }
+    }
+
+    .bottom {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        padding: 0px 10px;
+
+        .send_bar {
+            display: flex;
+            justify-content: space-between;
+            flex: 1;
+            gap: 6px;
+
+            .send_bar_left {
+                display: flex;
+                flex: 1;
+                align-items: center;
+                position: relative;
+                input {
+                    flex: 1;
+                    border-radius: 20px;
+                    font-size: 15px;
+                    padding: 12px;
+                    border: none;
+                    outline: none;
+                    background-color: rgb(236, 236, 236);
+                }
+                .emoji{
+                    position: absolute;
+                    top: 8px;
+                    right: 11px;
+                    svg{
+                        color: gray;
+                        cursor: pointer;
+                        &:hover{
+                            color: black;
+                        }
+                    }
+                    .picker-w{
+                        position: relative;
+                        .picker{
+                            position: absolute;
+                            top: -490px;
+                            right: 0;
+                            // bottom: 300px;
+                        }
+                    }
+                }
+            }
+
+            .send_bar_right {
+                width: 30px;
+                display: flex;
+                align-items: center;
+
+                .send_btn {
+                    color: #444;
+                    padding: 7px;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 20px;
+                    background-color: whitesmoke;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.message {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 24px;
+
+    .text {
+        font-family: 'Inter', sans-serif;
+        box-shadow: 0px 0px 6px rgb(0, 0, 0, 0.02);
+        padding: 10px;
+        padding-left: 16px;
+        min-width: 26px;
+        letter-spacing: 0.07rem;
+        background-color: whitesmoke;
+        font-size: 14px;
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+        border-bottom-right-radius: 18px;
+        border-bottom-left-radius: 0px;
+        color: black;
+        position: relative;
+        margin-left: 26px;
+        line-height: 1.4;
+        max-width: 175px;
+        word-break: break-all;
+
+        .timestamp {
+            position: absolute;
+            bottom: -16px;
+            right: 3px;
+            letter-spacing: 0px;
+            font-size: 10px;
+            line-height: 0.5rem;
+            color: #444;
+        }
+
+        .avatar {
+            position: absolute;
+            bottom: 0px;
+            left: -30px;
+        }
+
+    }
+
+    &.own {
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        .text {
+            color: whitesmoke;
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 18px;
+            background-color: #1877F2;
+            margin-left: 0px;
+        }
+    }
+
+
+}
