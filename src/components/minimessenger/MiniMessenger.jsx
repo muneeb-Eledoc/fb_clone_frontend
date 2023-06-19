@@ -11,7 +11,7 @@ import { formatMessages } from '../utils/formatMessages'
 import EmojiPicker from 'emoji-picker-react';
 
 const MiniMessenger = () => {
-    const { user, showMiniMessenger, arrivedMessage, setMiniChat, miniChat, onlineUsers, socket, setShowMiniMessenger } = useContext(AuthContext)
+    const { user, showMiniMessenger, arrivedMessage, setMiniChat, miniChat, onlineUsers, socket, setShowMiniMessenger, audio } = useContext(AuthContext)
     const [messages, setMessages] = useState([])
     const [formatedMessages, setFormatedMessages] = useState([])
     const [indiviualRecipient, setIndiviualRecipient] = useState({})
@@ -85,26 +85,34 @@ const MiniMessenger = () => {
 
     useEffect(() => {
         const getMessages = async () => {
-            setFormatedMessages([])
-            setMessages([])
-            setPage(1)
-            setLoading(true)
-            const res = await axios.get("/message/" + miniChat?._id)
-            if (res.data) {
-                setFormatedMessages(formatMessages(res.data.messages))
-                setTotal(res.data.total)
-                setMessages(res.data.messages)
-                ref.current?.scrollIntoView({})
-            }
-            setLoading(false)
+            try {
+                if(!miniChat?._id) return
+                setFormatedMessages([])
+                setMessages([])
+                setPage(1)
+                setLoading(true)
+                const res = await axios.get("/message/" + miniChat?._id)
+                if (res.data) {
+                    setFormatedMessages(formatMessages(res.data.messages))
+                    setTotal(res.data.total)
+                    setMessages(res.data.messages)
+                    ref.current?.scrollIntoView({})
+                }
+                setLoading(false)
+            } catch (error) {
+            } 
         }
         getMessages()
     }, [miniChat])
 
     useEffect(() => {
         const getMem = async () => {
-            const res = await axios.get(`/users?userId=${miniChat?.members?.find(m => m !== user._id)}`);
-            setIndiviualRecipient(res.data)
+            try {
+                const res = await axios.get(`/users?userId=${miniChat?.members?.find(m => m !== user._id)}`);
+                setIndiviualRecipient(res.data)
+            } catch (error) {
+                
+            }
         }
         getMem()
     }, [miniChat, user])

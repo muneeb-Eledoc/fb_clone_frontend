@@ -11,8 +11,13 @@ export default function Profile() {
     const username = useParams().username
     useEffect(() => {
         const fetchuser = async ()=>{
-            const res = await axios.get(`/users?username=${username}`);
-            setUser(res.data)
+            try {
+                const res = await axios.get(`/users?username=${username}`);
+                setUser(res.data)
+                
+            } catch (error) {
+                
+            }
         }
         fetchuser()
      }, [username])
@@ -25,7 +30,7 @@ export default function Profile() {
                 <div className="profileRight">
                     <div className="profileRightTop">
                            <div className="profileCover">
-                               <img className='profilecoverImg' src={user.coverPicture}  alt="" />
+                               <img className='profilecoverImg' src={user.coverPicture?user.coverPicture:'https://marketplace.canva.com/EAEmBit3KfU/1/0/1600w/canva-black-flatlay-photo-motivational-finance-quote-facebook-cover-myVl9DXwcjQ.jpg'}  alt="" />
                                <img className='profileAvatar' src={user.profilePicture} alt="" />
                            </div>
                            <div className="profileInfo">

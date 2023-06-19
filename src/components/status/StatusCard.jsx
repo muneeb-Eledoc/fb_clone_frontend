@@ -7,8 +7,13 @@ const StatusCard = ({status}) => {
 
     useEffect(()=>{
         const getUser = async ()=>{
-            const statusUser = await fetchUser(status.userId)
-            setUser(statusUser)
+            try {
+                
+                const statusUser = await fetchUser(status.userId)
+                setUser(statusUser)
+            } catch (error) {
+                
+            }
         }
         getUser()
     }, [status])

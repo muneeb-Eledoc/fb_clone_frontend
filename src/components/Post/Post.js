@@ -25,8 +25,12 @@ export default function Post({ post, onLike }) {
     useEffect(() => {
         setLike(post.likes.length)
         const fetchUser = async () => {
-            const res = await axios.get(`/users?userId=${post.userId}`);
-            setUser(res.data);
+            try {
+                const res = await axios.get(`/users?userId=${post.userId}`);
+                setUser(res.data);
+            } catch (error) {
+                
+            }
         };
         fetchUser();
     }, [post])
@@ -45,20 +49,20 @@ export default function Post({ post, onLike }) {
         })
         setIsLiked(!isLiked);
         try {
-            await fetch('https://fd-clone-backend.vercel.app/api/post/' + post._id + "/like", {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'token': localStorage.getItem("token")
-                }
-            })
-            // await fetch('http://localhost:8800/api/post/' + post._id + "/like", {
+            // await fetch('https://fd-clone-backend.vercel.app/api/post/' + post._id + "/like", {
             //     method: 'PUT',
             //     headers: {
             //         'Content-Type': 'application/json',
             //         'token': localStorage.getItem("token")
             //     }
             // })
+            await fetch('http://localhost:8800/api/post/' + post._id + "/like", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': localStorage.getItem("token")
+                }
+            })
         } catch (err) { }
     }
 

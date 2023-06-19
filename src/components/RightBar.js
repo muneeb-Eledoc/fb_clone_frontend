@@ -42,8 +42,12 @@ export default function RightBar({ user }) {
     useEffect(() => {
         localStorage.getItem("token") === "null" && navigate("/login")
         const getFriends = async () => {
-            const res = user && await axios.get(`/users/friends/${user._id}`)
-            setfriends(user && res.data)
+            try {
+                const res = user && await axios.get(`/users/friends/${user._id}`)
+                setfriends(user && res.data)
+            } catch (error) {
+                
+            }
         }
         getFriends()
 

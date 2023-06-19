@@ -1,5 +1,5 @@
 import AuthReducer from "./AuthReducer";
-import { createContext, useEffect, useReducer, useState} from "react"
+import { createContext, useEffect, useReducer, useState } from "react"
 import axios from "../../axios"
 import { io } from "socket.io-client";
 import { useRef } from "react";
@@ -13,7 +13,7 @@ export const AuthContext = createContext(INITIAL_STATE)
 
 const socket = io("http://localhost:8901")
 
-export const AuthContextProvider =({children})=>{
+export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE)
     const [onlineUsers, setOnlineUsers] = useState([])
     const [userr, setuserr] = useState({})
@@ -28,10 +28,10 @@ export const AuthContextProvider =({children})=>{
     }, [state.token])
 
     useEffect(() => {
-        const getUser = async(token)=>{
-            try{
+        const getUser = async (token) => {
+            try {
                 const res = await axios.get("/users/current", {
-                    headers:{
+                    headers: {
                         token: token
                     }
                 })
@@ -40,13 +40,13 @@ export const AuthContextProvider =({children})=>{
                 socket.on("getUsers", (users) => {
                     setOnlineUsers(users)
                 })
-            }catch(e){}
-      }
-       getUser(localStorage.getItem("token"))
+            } catch (e) { }
+        }
+        getUser(localStorage.getItem("token"))
     }, [state.token])
 
     useEffect(() => {
-        try{
+        try {
             socket.on("getMessage", (data) => {
                 setArrivedMessage({
                     _id: Date.now(),
@@ -55,36 +55,41 @@ export const AuthContextProvider =({children})=>{
                     createdAt: Date.now(),
                     receiverId: data.receiverId
                 })
-                if(window.location.pathname!=='/messenger'&&!showMiniMessenger){
+                if (window.location.pathname !== '/messenger' && !showMiniMessenger) {
                     setShowMiniMessenger(true)
                 }
-                setTimeout(() => {
-                    audio.current.play()
-                }, 200);
+                // setTimeout(() => {
+                //     try {
+                //         // eslint-disable-next-line
+                //         audio.current?.play()
+                //     } catch (e) {
+                //     }
+                // }, 200);
             })
-        }catch(e){}
+        } catch (e) { }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    return(
+    return (
         <AuthContext.Provider value={
-           {
-               user: userr,
-               isFetching: state.isFetching,
-               error: state.error,
-               dispatch,
-               setuserr,
-               socket,
-               onlineUsers,
-               showSideBar,
-               setShowSideBar,
-               showMiniMessenger,
-               setShowMiniMessenger,
-               setArrivedMessage,
-               arrivedMessage,
-               miniChat,
-               setMiniChat
-           }
+            {
+                user: userr,
+                isFetching: state.isFetching,
+                error: state.error,
+                dispatch,
+                setuserr,
+                socket,
+                onlineUsers,
+                showSideBar,
+                setShowSideBar,
+                showMiniMessenger,
+                setShowMiniMessenger,
+                setArrivedMessage,
+                arrivedMessage,
+                miniChat,
+                setMiniChat,
+                audio
+            }
         }>
             {children}
         </AuthContext.Provider>

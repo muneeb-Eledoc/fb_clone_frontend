@@ -128,7 +128,7 @@ export default function Messenger() {
         const message = {
             sender: user._id,
             conversationId: currentChat._id,
-            text: newMessage
+            text: newMessage.trim()
         }
         const receiverId = currentChat.members.find(m => m !== user._id)
         socket.emit("sendMessage", {

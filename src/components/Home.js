@@ -26,32 +26,43 @@ export default function Home() {
 }
 
 async function regSw(user) {
-    if ('serviceWorker' in navigator) {
-        let url = process.env.PUBLIC_URL + '/sw.js';
-        navigator.serviceWorker.register(url, { scope: '/' }).then((res) => {
-            return res.pushManager.getSubscription().then(async (subscription) => {
-                if (subscription === null) {
-                    subscription = await res.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: 'BHD-irDuWfPkFu3FXdKXBJT-k7BUq_0mtgNt1Xg6UCfZfSxLHiudprK2YjkxVZb0KHiN-BZ6BCbJPc0lo1-2Go0',
-                    })
-                }
-                let endPoints = []
-                user.subscriptions?.forEach(sub => {
-                    endPoints.push(sub.endpoint)
-                });
-                if (!endPoints.includes(subscription.endpoint)) {
-                    await axios.post('users/subscribe/'+user._id, subscription,  {
-                        headers: {
-                            token: localStorage.getItem("token")
+    try {
+        
+        if ('serviceWorker' in navigator) {
+            let url = process.env.PUBLIC_URL + '/sw.js';
+            
+            navigator.serviceWorker.register(url, { scope: '/' }).then((res) => {
+                    return res.pushManager.getSubscription().then(async (subscription) => {
+                        try {
+                        if (subscription === null) {
+                                subscription = await res.pushManager.subscribe({
+                                    userVisibleOnly: true,
+                                    applicationServerKey: 'BHD-irDuWfPkFu3FXdKXBJT-k7BUq_0mtgNt1Xg6UCfZfSxLHiudprK2YjkxVZb0KHiN-BZ6BCbJPc0lo1-2Go0',
+                                })
+                                
+                            }
+                        } catch (error) {
+                            
                         }
+                        let endPoints = []
+                        user.subscriptions?.forEach(sub => {
+                            endPoints.push(sub.endpoint)
+                        });
+                        if (!endPoints.includes(subscription?.endpoint)) {
+                            await axios.post('users/subscribe/'+user._id, subscription,  {
+                                headers: {
+                                    token: localStorage.getItem("token")
+                                }
+                            })
+                        }
+        
                     })
-                }
-
-            })
-
-        })
-    } else {
-        throw Error('serviceworker not supported');
+        
+                })
+        } else {
+            throw Error('serviceworker not supported');
+        }
+    } catch (error) {
+        
     }
 }
